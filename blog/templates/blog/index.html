@@ -1,0 +1,8 @@
+{% for data in post %}
+    <a href="{% url'blog:detail'slug=data.Slug %}"><h1>{{ data.Title }}</h1></a>
+    <span>{{ data.Date }}</span>
+    <img src="{{ data.Image.url }}"/>
+    <p>{{ data.Content }}</p>
+
+{% endfor %}
+

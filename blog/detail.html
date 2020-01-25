@@ -1,0 +1,35 @@
+{% load tz %}
+<h1>post detail view </h1>
+<br/>
+<h2>{{blog.Title}}</h2>
+{{blog.Date | localtime }}
+<br/>
+<img src="{{blog.Image.url}}" width="50%" height="50%"/>
+<p>{{blog.Content | safe }}</p>
+
+<!--comment-->
+<h2>Add comment</h2>
+<form action="." method="post">
+    {{comment_form.as_p}}
+    {% csrf_token %}
+    <button type="submit">Add comment</button>
+</form>
+
+<!--comment list-->
+{% for comment in comments %}
+    <p>{{comment.Name}} | {{comment.created}}</p>
+    {{comment.Body | linebreaks}}
+    {% for reply in comment.replies.all %}
+        <p>{{reply.Name}} | {{reply.Email}}</p>
+            {{reply.Body | linebreaks}}
+    {% endfor %}
+    <p>Reply</p>
+        <form action="."method="post">
+            {{comment_form.as_p}}
+            {%csrf_token%}
+            <input type="hidden">name="Parent_id" value="{{comment.id}}"
+            <button type="submit">Reply</button>
+        </form>
+{% empty %}
+<h4>There is no comment</h4>
+{% endfor %}
